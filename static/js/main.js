@@ -31,7 +31,7 @@ $(function() {
 
     $(".show-history").click(function(event) {
         event.preventDefault();
-        var url = "/history" + document.location.pathname;
+        var url = "/history/" + $("#date").data("date");
         $.getJSON(url, {movie: $(this).data("id")}, function(data) {
             $("#history").show();
             renderHistory(data);
