@@ -1,0 +1,56 @@
+{% extends "layouts/default.html" %}
+{% block title %}Welcome to Blue Water{% endblock %}
+{% block content %}
+<div class="container-fluid">
+    <h1 class="page-header">
+        <a href="/{{date}}">Рейтинг</a>
+    </h1>
+    <div class="row">
+        <div class="col-md-3">
+            <div id="date" data-date="{{date}}"></div>
+        </div>
+        <div class="col-md-7">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Название</th>
+                            <th>Обобщенный рейтинг</th>
+                            <th>Кинопоиск</th>
+                            <th>Box Office Mojo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for movie in movies %}
+                        <tr>
+                            <td>{{forloop.counter}}</td>
+                            <td>
+                                <a class="show-history"
+                                   href="#show-history"
+                                   data-id={{movie.movie-id}}
+                                >
+                                    {{movie.title}}
+                                </a>
+                            </td>
+                            <td>{{movie.rating}}</td>
+                            <td>{{movie.rating-kp}}</td>
+                            <td>{{movie.rating-mojo}}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="history" class="panel panel-default">
+    <div class="panel-heading">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 id="history-title" class="panel-title"></h3>
+    </div>
+    <div class="panel-body">
+        <canvas id="history-canvas"></canvas>
+    </div>
+</div>
+{% endblock %}
