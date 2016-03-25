@@ -21,7 +21,7 @@
   (let ((date-from (parse-date date-from))
         (date-to (parse-date date-to)))
     (loop
-       for date = (clone-date date-from) then (day+ date 1)
+       for date = date-from then (day+ date 1)
        while (date<= date date-to)
        do
          (when verbose
@@ -50,18 +50,19 @@
              (let ((suffix-index (search ", The" title)))
                (if suffix-index
                    (concatenate 'string "The " (subseq title 0 suffix-index))
-                   title))))
+                   title)))
+           (parse-node (elem selector fix-fn)
+             (let ((node (clss:select selector elem)))
+                  (if (plusp (length node))
+                      (funcall fix-fn (plump:text (aref node 0)))))))
       (loop
          for elem across (clss:select ".el" (get-page url))
          for rating = 1 then (1+ rating)
          collect
            (list
             :rating rating
-            :ru (remove-year (plump:text (aref (clss:select ">a" elem) 0)))
-            :en (let ((node (clss:select "i" elem)))
-                  (if (plusp (length node))
-                      (fix-en-title (plump:text (aref node 0)))
-                      "")))))))
+            :ru (parse-node elem ">a" #'remove-year)
+            :en (parse-node elem "i" #'fix-en-title))))))
 
 (defun get-mojo-list (date)
   (let ((url (format nil "http://www.boxofficemojo.com/daily/chart/?view=1day&sortdate=~a&order=DESC" date)))
