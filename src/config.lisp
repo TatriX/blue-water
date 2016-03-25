@@ -28,7 +28,7 @@
 (defconfig |development|
   `(:debug T
     :databases
-    ((:maindb :sqlite3 :database-name ,(merge-pathnames #P"movies.db"
+    ((:maindb :sqlite3 :database-name ,(merge-pathnames #P"db/movies.db"
                                                         *application-root*)))))
 
 (defconfig |production|
